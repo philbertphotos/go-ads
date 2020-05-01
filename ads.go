@@ -49,6 +49,14 @@ func (ads *ADS) SetConfigDataRate(configDataRate ConfigDataRate) {
 	ads.write[2] = ads.config[1]
 }
 
+// SetConfigMode sets mode
+func (ads *ADS) SetConfigMode(configMode ConfigMode) {
+	ads.configMode = uint16(configGain)
+	binary.BigEndian.PutUint16(ads.config, configDefault|ads.configInputMultiplexer|ads.configGain|ads.configDataRate)
+	ads.write[1] = ads.config[0]
+	ads.write[2] = ads.config[1]
+}
+
 // ReadRetry will call Read until there is no errors or the maxRetries is hit.
 // Suggest maxRetries to be set around 5.
 func (ads *ADS) ReadRetry(maxRetries int) (result uint16, err error) {
